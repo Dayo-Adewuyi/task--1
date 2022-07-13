@@ -1,31 +1,42 @@
-const getLongestWord = (sentence) =>{
-    const punctuationReg = /[.:;,?!"`~[\]{}()<>/@#$%^&*=+_-]/g;
-    const word = sentence
-	.replaceAll(/\s{2,}/g, ' ')
-	.replaceAll(punctuationReg, '')
-	.split(' ');
 
-    let currentWord = ' '
 
-    const getVowels = (word) => {
-        let vowels = 0;
-        for (let i = 0; i < word.length; i++){
-            if(word[i] === 'a' || word[i] === 'e' || word[i] === 'i' || word[i] === 'o' || word[i] === 'u' ){
-                vowels++;
-            }
+function findLongest (str) {
+    str = str + " "
+    let currentWord = ""
+    let currentWordVowel = 0
+    let longestWordVowels = 0
+    let currentLongestWord = ""
+    let i = 0
+    while (i < str.length) {
+        if (str[i] === "a" || str[i] === "e" || str[i] === "i" || str[i] === "o" || str[i] === "u"){
+            currentWordVowel ++
         }
-        return vowels;
-    }
-
-    for( let i = 0; i < word.length; i++){
-        if(word[i].length > currentWord.length){
-            currentWord = word[i]
-        }else if (word[i].length  === currentWord.length){
-            if(getVowels(word[i]) > getVowels(currentWord)){
-                currentWord = word[i]
+        if (str[i] === " "){
+            if (currentWord.length > currentLongestWord.length){
+                currentLongestWord = currentWord
+                longestWordVowels = currentWordVowel
+                currentWord = ""
+                currentWordVowel = 0
             }
+            if (currentWord.length == currentLongestWord.length && currentWordVowel > longestWordVowels){
+                currentLongestWord = currentWord
+                currentWord = ""
+                currentWordVowel = 0
+            }
+            currentWord = ""
+            currentWordVowel = 0
         }
+        else {
+            if (isLetter(str[i]))
+            {currentWord = currentWord + str[i]}
+        }
+        i++
     }
-    return currentWord;
+    return currentLongestWord
+}
+
+function isLetter(char){
+    return ( (char >= 'A' &&  char <= 'Z') ||
+             (char >= 'a' &&  char <= 'z') );
 }
 
